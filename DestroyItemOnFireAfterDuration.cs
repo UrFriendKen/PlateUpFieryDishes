@@ -10,6 +10,7 @@ using Unity.Entities;
 
 namespace KitchenDishesOnFire
 {
+    [UpdateInGroup(typeof(DestructionGroup))]
     public class DestroyItemOnFireAfterDuration : DaySystem, IModSystem
     {
         EntityQuery DestroyableItems;
