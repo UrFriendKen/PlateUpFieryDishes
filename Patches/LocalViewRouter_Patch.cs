@@ -1,13 +1,13 @@
 ﻿using HarmonyLib;
 using Kitchen;
 using KitchenData;
-using KitchenDishesOnFire.Customs;
+using KitchenInferno.Customs;
 using KitchenLib.Utils;
 using System.Reflection;
 using UnityEngine;
 using UnityEngine.VFX;
 
-namespace KitchenDishesOnFire.Patches
+namespace KitchenInferno.Patches
 {
     [HarmonyPatch]
     static class LocalViewRouter_Patch

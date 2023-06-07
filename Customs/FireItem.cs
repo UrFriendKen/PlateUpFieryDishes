@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.VFX;
 
-namespace KitchenDishesOnFire.Customs
+namespace KitchenInferno.Customs
 {
     public class FireItem : CustomItem
     {

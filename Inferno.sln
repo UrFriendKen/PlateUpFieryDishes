@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33205.214
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FieryDishes", "FieryDishes.csproj", "{FF9B5F6F-3906-454F-B961-E7DAB98EBD59}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Inferno", "Inferno.csproj", "{7AFB432D-6253-4725-90E3-C269E7E7FB57}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{FF9B5F6F-3906-454F-B961-E7DAB98EBD59}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FF9B5F6F-3906-454F-B961-E7DAB98EBD59}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FF9B5F6F-3906-454F-B961-E7DAB98EBD59}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FF9B5F6F-3906-454F-B961-E7DAB98EBD59}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7AFB432D-6253-4725-90E3-C269E7E7FB57}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7AFB432D-6253-4725-90E3-C269E7E7FB57}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7AFB432D-6253-4725-90E3-C269E7E7FB57}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7AFB432D-6253-4725-90E3-C269E7E7FB57}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {1E786973-AE42-4A8A-BF32-C2435EF3373F}
+		SolutionGuid = {F173CE5B-9B43-4CD1-9058-97E0DC0EE8F2}
 	EndGlobalSection
 EndGlobal

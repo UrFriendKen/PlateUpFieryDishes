@@ -2,7 +2,7 @@
 using Kitchen;
 using Unity.Entities;
 
-namespace KitchenDishesOnFire.Patches
+namespace KitchenInferno.Patches
 {
     [HarmonyPatch]
     static class GroupReceiveItem_Patch

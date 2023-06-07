@@ -5,7 +5,7 @@ using KitchenLib.Utils;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace KitchenDishesOnFire.Customs
+namespace KitchenInferno.Customs
 {
     public class DirtyPlateWithBurnedFood : CustomItem
     {

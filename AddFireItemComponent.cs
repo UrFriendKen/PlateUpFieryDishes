@@ -1,13 +1,13 @@
 ﻿using Kitchen;
 using KitchenData;
-using KitchenDishesOnFire.Customs;
+using KitchenInferno.Customs;
 using KitchenLib.Utils;
 using KitchenMods;
 using System.Runtime.InteropServices;
 using Unity.Collections;
 using Unity.Entities;
 
-namespace KitchenDishesOnFire
+namespace KitchenInferno
 {
     [UpdateBefore(typeof(GroupOrderIndicator))]
     [UpdateAfter(typeof(MarkOrderedItemsOnFire))]

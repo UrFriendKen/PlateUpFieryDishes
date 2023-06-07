@@ -4,7 +4,7 @@ using Unity.Collections;
 using Unity.Entities;
 using UnityEngine.VFX;
 
-namespace KitchenDishesOnFire
+namespace KitchenInferno
 {
     public class ItemOnFireView : UpdatableObjectView<ItemOnFireView.ViewData>
     {

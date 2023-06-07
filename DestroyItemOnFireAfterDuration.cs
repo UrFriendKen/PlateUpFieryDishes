@@ -1,6 +1,6 @@
 ﻿using Kitchen;
 using KitchenData;
-using KitchenDishesOnFire.Customs;
+using KitchenInferno.Customs;
 using KitchenLib.References;
 using KitchenLib.Utils;
 using KitchenMods;
@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using Unity.Collections;
 using Unity.Entities;
 
-namespace KitchenDishesOnFire
+namespace KitchenInferno
 {
     [UpdateInGroup(typeof(DestructionGroup))]
     public class DestroyItemOnFireAfterDuration : DaySystem, IModSystem
@@ -20,7 +20,7 @@ namespace KitchenDishesOnFire
         {
             base.Initialise();
             DestroyableItems = GetEntityQuery(new QueryHelper()
-                .All(typeof(CItem), typeof(CDestroyItemOnFireDuration)));
+                .All(typeof(CItem), typeof(CItemOnFire), typeof(CDestroyItemOnFireDuration)));
 
             SpecialDestroyedItems = new Dictionary<int, Item>()
             {
@@ -33,6 +33,7 @@ namespace KitchenDishesOnFire
         {
             using NativeArray<Entity> entities = DestroyableItems.ToEntityArray(Allocator.Temp);
             using NativeArray<CItem> items = DestroyableItems.ToComponentDataArray<CItem>(Allocator.Temp);
+            using NativeArray<CItemOnFire> onFires = DestroyableItems.ToComponentDataArray<CItemOnFire>(Allocator.Temp);
             using NativeArray<CDestroyItemOnFireDuration> destroyDurations = DestroyableItems.ToComponentDataArray<CDestroyItemOnFireDuration>(Allocator.Temp);
 
             float dt = Time.DeltaTime;
@@ -41,22 +42,20 @@ namespace KitchenDishesOnFire
             {
                 Entity entity = entities[i];
                 CItem item = items[i];
+                CItemOnFire onFire = onFires[i];
                 CDestroyItemOnFireDuration destroyDuration = destroyDurations[i];
-                if (destroyDuration.RemainingTime < 0f)
+                if (onFire.BurningDuration > destroyDuration.TotalTime)
                 {
-                    if (Has<CItemOnFire>(entity))
-                        EntityManager.RemoveComponent<CItemOnFire>(entity);
-                    if (Has<CDestroyItemOnFireDuration>(entity))
-                        EntityManager.RemoveComponent<CDestroyItemOnFireDuration>(entity);
-
+                    EntityManager.RemoveComponent<CItemOnFire>(entity);
+                    EntityManager.RemoveComponent<CDestroyItemOnFireDuration>(entity);
                     Set(entity, new CChangeItemType()
                     {
                         NewID = DetermineDestroyedItemID(item)
                     });
                     continue;
                 }
-                destroyDuration.RemainingTime -= dt;
-                Set(entity, destroyDuration);
+                onFire.BurningDuration += dt * onFire.BurnSpeed;
+                Set(entity, onFire);
             }
         }
 

@@ -1,47 +1,48 @@
-﻿using KitchenDishesOnFire.Customs;
+﻿using Kitchen;
+using KitchenData;
+using KitchenInferno.Customs;
+using KitchenInferno.Customs.Inferno;
+using KitchenInferno.Customs.InfernoSetting;
 using KitchenLib;
 using KitchenLib.Event;
+using KitchenLib.References;
+using KitchenLib.Utils;
 using KitchenMods;
 using PreferenceSystem;
 using PreferenceSystem.Generators;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using UnityEngine;
 
 // Namespace should have "Kitchen" in the beginning
-namespace KitchenDishesOnFire
+namespace KitchenInferno
 {
     public class Main : BaseMod, IModSystem
     {
         // GUID must be unique and is recommended to be in reverse domain name notation
         // Mod Name is displayed to the player and listed in the mods menu
         // Mod Version must follow semver notation e.g. "1.2.3"
-        public const string MOD_GUID = "IcedMilo.PlateUp.FieryDishes";
-        public const string MOD_NAME = "Fiery Dishes";
-        public const string MOD_VERSION = "0.1.1";
+        public const string MOD_GUID = "IcedMilo.PlateUp.Inferno";
+        public const string MOD_NAME = "Inferno";
+        public const string MOD_VERSION = "0.2.0";
         public const string MOD_AUTHOR = "IcedMilo";
         public const string MOD_GAMEVERSION = ">=1.1.5";
         // Game version this mod is designed for in semver
         // e.g. ">=1.1.3" current and all future
         // e.g. ">=1.1.3 <=1.2.3" for all from/until
 
-        // Boolean constant whose value depends on whether you built with DEBUG or RELEASE mode, useful for testing
-#if DEBUG
-        public const bool DEBUG_MODE = true;
-#else
-        public const bool DEBUG_MODE = false;
-#endif
-
         public static AssetBundle Bundle;
 
         public Main() : base(MOD_GUID, MOD_NAME, MOD_AUTHOR, MOD_VERSION, MOD_GAMEVERSION, Assembly.GetExecutingAssembly()) { }
 
         internal static FireItem CustomFireItem;
+        internal static InfernoSetting CustomInfernoSetting;
 
         internal static PreferenceSystemManager PrefManager;
-        public const string FIRE_ORDER_CHANCE_ID = "fireOrderChance";
-        public const string DESTROY_ITEM_DELAY_ID = "destroyItemDelay";
         public const string FIRE_DISPLAY_INTENSITY_ID = "fireDisplayIntensity";
+
+        public static readonly RestaurantStatus PYROMANIA_EFFECT_STATUS = (RestaurantStatus)VariousUtils.GetID("pyromaniaEffect");
 
         protected override void OnInitialise()
         {
@@ -56,23 +57,18 @@ namespace KitchenDishesOnFire
 
             AddGameDataObject<DirtyPlateWithBurnedFood>();
 
+            AddGameDataObject<FlamingMeals>();
+            AddGameDataObject<FlamingMealsForced>();
+            AddGameDataObject<PyromaniaUnlock>();
+            AddGameDataObject<InfernoSpecialCard>();
+            AddGameDataObject<InfernoCompositeUnlockPack>();
+            CustomInfernoSetting = AddGameDataObject<InfernoSetting>();
+
             LogInfo("Done loading game data.");
         }
 
         protected override void OnUpdate()
         {
-        }
-
-        internal static float GetDestroyItemDelay()
-        {
-            int prefValue = PrefManager?.Get<int>(DESTROY_ITEM_DELAY_ID) ?? 10;
-            return prefValue == -1 ? float.MaxValue : (float)prefValue;
-        }
-
-        internal static float GetFireOrderChance()
-        {
-            int prefValue = PrefManager?.Get<int>(FIRE_ORDER_CHANCE_ID) ?? 50;
-            return (prefValue == 100 ? float.MaxValue : prefValue / 100f);
         }
 
         internal static float GetFireDisplayIntensity()
@@ -120,19 +116,7 @@ namespace KitchenDishesOnFire
             string[] destroyItemDelayStrings = intArrayGenerator.GetStrings();
             intArrayGenerator.Clear();
 
-            PrefManager.AddLabel("Fire Order Chance")
-                .AddOption<int>(
-                    FIRE_ORDER_CHANCE_ID,
-                    50,
-                    zeroToHundredPercentValues,
-                    zeroToHundredPercentStrings)
-                .AddLabel("Destroy Item After")
-                .AddOption<int>(
-                    DESTROY_ITEM_DELAY_ID,
-                    10,
-                    destroyItemDelayValues,
-                    destroyItemDelayStrings)
-                .AddSpacer()
+            PrefManager
                 .AddLabel("Fire Display Intensity")
                 .AddOption<int>(
                     FIRE_DISPLAY_INTENSITY_ID,
@@ -147,9 +131,40 @@ namespace KitchenDishesOnFire
 
             PrefManager.RegisterMenu(PreferenceSystemManager.MenuType.PauseMenu);
 
+            HashSet<int> addCatchFireOnFailurePyromaniaAppliances = new HashSet<int>()
+            {
+                ApplianceReferences.HobStarting,
+                ApplianceReferences.Hob,
+                //ApplianceReferences.HobSafe,
+                ApplianceReferences.Oven
+            };
+
             // Perform actions when game data is built
             Events.BuildGameDataEvent += delegate (object s, BuildGameDataEventArgs args)
             {
+                foreach (int applianceID in addCatchFireOnFailurePyromaniaAppliances)
+                {
+                    if (!args.gamedata.TryGet(applianceID, out Appliance appliance, warn_if_fail: true))
+                        continue;
+                    if (appliance.Properties.Select(x => x.GetType()).Contains(typeof(CCatchFireOnFailurePyromania)))
+                        continue;
+                    appliance.Properties.Add(new CCatchFireOnFailurePyromania());
+                }
+
+                if (args.gamedata.TryGet(UnlockReferences.QuickerBurning, out UnlockCard highStandardsUnlock))
+                {
+                    if (!highStandardsUnlock.Effects.Where(x => x.GetType() == typeof(GlobalEffect)).Cast<GlobalEffect>().Select(x => x.EffectType.GetType()).Contains(typeof(CFlammableItemsModifier)))
+                    {
+                        highStandardsUnlock.Effects.Add(new GlobalEffect()
+                        {
+                            EffectCondition = new CEffectAlways(),
+                            EffectType = new CFlammableItemsModifier()
+                            {
+                                BurnSpeedChange = 1f
+                            }
+                        });
+                    }
+                }
             };
         }
         #region Logging

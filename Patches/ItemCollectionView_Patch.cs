@@ -3,7 +3,7 @@ using Kitchen;
 using KitchenData;
 using UnityEngine;
 
-namespace KitchenDishesOnFire.Patches
+namespace KitchenInferno.Patches
 {
     [HarmonyPatch]
     static class ItemCollectionView_Patch
