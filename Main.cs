@@ -25,7 +25,7 @@ namespace KitchenInferno
         // Mod Version must follow semver notation e.g. "1.2.3"
         public const string MOD_GUID = "IcedMilo.PlateUp.Inferno";
         public const string MOD_NAME = "Inferno";
-        public const string MOD_VERSION = "0.2.0";
+        public const string MOD_VERSION = "0.2.2";
         public const string MOD_AUTHOR = "IcedMilo";
         public const string MOD_GAMEVERSION = ">=1.1.5";
         // Game version this mod is designed for in semver
@@ -63,6 +63,9 @@ namespace KitchenInferno
             AddGameDataObject<InfernoSpecialCard>();
             AddGameDataObject<InfernoCompositeUnlockPack>();
             CustomInfernoSetting = AddGameDataObject<InfernoSetting>();
+
+            AddGameDataObject<PyroPatronsCopy>();
+            AddGameDataObject<FreakFiresCopy>();
 
             LogInfo("Done loading game data.");
         }
@@ -139,6 +142,12 @@ namespace KitchenInferno
                 ApplianceReferences.Oven
             };
 
+            HashSet<int> addFireImmuneAppliances = new HashSet<int>()
+            {
+                ApplianceReferences.Nameplate,
+                ApplianceReferences.WheelieBin
+            };
+
             // Perform actions when game data is built
             Events.BuildGameDataEvent += delegate (object s, BuildGameDataEventArgs args)
             {
@@ -149,6 +158,15 @@ namespace KitchenInferno
                     if (appliance.Properties.Select(x => x.GetType()).Contains(typeof(CCatchFireOnFailurePyromania)))
                         continue;
                     appliance.Properties.Add(new CCatchFireOnFailurePyromania());
+                }
+
+                foreach (int applianceID in addFireImmuneAppliances)
+                {
+                    if (!args.gamedata.TryGet(applianceID, out Appliance appliance, warn_if_fail: true))
+                        continue;
+                    if (appliance.Properties.Select(x => x.GetType()).Contains(typeof(CFireImmune)))
+                        continue;
+                    appliance.Properties.Add(new CFireImmune());
                 }
 
                 if (args.gamedata.TryGet(UnlockReferences.QuickerBurning, out UnlockCard highStandardsUnlock))
