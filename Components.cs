@@ -11,6 +11,11 @@ namespace KitchenInferno
         public float BurnSpeed;
     }
 
+    public struct COrderFramesDelay : IComponentData, IModComponent
+    {
+        public int Remaining;
+    }
+
     public struct CDestroyItemOnFireDuration : IComponentData, IModComponent
     {
         public float TotalTime;

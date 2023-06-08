@@ -7,20 +7,21 @@ using UnityEngine;
 
 namespace KitchenInferno
 {
+    [UpdateAfter(typeof(AssignMenuRequests))]
     public class MarkOrderedItemsOnFire : DaySystem, IModSystem
     {
         [StructLayout(LayoutKind.Sequential, Size = 1)]
         public struct CPerformed : IComponentData, IModComponent { }
 
-        EntityQuery RequestedItems;
         EntityQuery FireOrderChances;
+        EntityQuery Orders;
 
         protected override void Initialise()
         {
             base.Initialise();
 
-            RequestedItems = GetEntityQuery(new QueryHelper()
-                .All(typeof(CItem), typeof(CRequestItemOf))
+            Orders = GetEntityQuery(new QueryHelper()
+                .All(typeof(CWaitingForItem))
                 .None(typeof(CPerformed)));
             FireOrderChances = GetEntityQuery(new QueryHelper()
                 .All(typeof(CAppliesEffect), typeof(CFireOrderChance)));
@@ -28,7 +29,7 @@ namespace KitchenInferno
 
         protected override void OnUpdate()
         {
-            if (FireOrderChances.IsEmpty || RequestedItems.IsEmpty)
+            if (FireOrderChances.IsEmpty || Orders.IsEmpty)
                 return;
 
             float chance = 0f;
@@ -43,16 +44,19 @@ namespace KitchenInferno
                 chance += (1f - chance) * Mathf.Clamp01(modifier.OrderChance);
             }
 
-            Main.LogInfo(chance);
-            using NativeArray<Entity> entities = RequestedItems.ToEntityArray(Allocator.Temp);
+            using NativeArray<Entity> entities = Orders.ToEntityArray(Allocator.Temp);
             for (int i = 0; i < entities.Length; i++)
             {
-                Entity entity = entities[i];
-                if (Random.value < chance || chance == 1f)
+                DynamicBuffer<CWaitingForItem> orderItems = GetBuffer<CWaitingForItem>(entities[i]);
+
+                for (int j = 0; j < orderItems.Length; j++)
                 {
-                    Set(entity, default(CItemOnFire));
+                    if (Random.value < chance || chance == 1f)
+                    {
+                        Set(orderItems[j].Item, default(CItemOnFire));
+                    }   
                 }
-                Set<CPerformed>(entity);
+                Set<CPerformed>(entities[i]);
             }
         }
     }

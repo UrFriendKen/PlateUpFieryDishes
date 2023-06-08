@@ -7,8 +7,7 @@ using Unity.Entities;
 
 namespace KitchenInferno
 {
-    [UpdateBefore(typeof(InteractionGroup))]
-    [UpdateAfter(typeof(GroupReceiveItem))]
+    [UpdateInGroup(typeof(HighPriorityInteractionGroup))]
     public class SetItemOnFire : DaySystem, IModSystem
     {
         EntityQuery AppliancesOnFire;

@@ -3,7 +3,6 @@ using KitchenData;
 using KitchenInferno.Customs;
 using KitchenLib.Utils;
 using KitchenMods;
-using System.Runtime.InteropServices;
 using Unity.Collections;
 using Unity.Entities;
 
@@ -13,17 +12,13 @@ namespace KitchenInferno
     [UpdateAfter(typeof(MarkOrderedItemsOnFire))]
     public class AddFireItemComponent : DaySystem, IModSystem
     {
-        [StructLayout(LayoutKind.Sequential, Size = 1)]
-        public struct CPerformed : IComponentData, IModComponent { }
-
         EntityQuery Items;
 
         protected override void Initialise()
         {
             base.Initialise();
             Items = GetEntityQuery(new QueryHelper()
-                .All(typeof(CItem), typeof(CItemOnFire))
-                .None(typeof(CPerformed)));
+                .All(typeof(CItem), typeof(CItemOnFire)));
         }
 
         protected override void OnUpdate()

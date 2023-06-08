@@ -21,6 +21,11 @@ namespace KitchenInferno
         {
         }
 
+        internal static bool StaticHas<T>(Entity entity) where T : struct, IComponentData
+        {
+            return _instance?.Has<T>(entity) ?? false;
+        }
+
         internal static bool OrderMatchCandidateFireState(Entity request, Entity candidate)
         {
             if (_instance == null)
