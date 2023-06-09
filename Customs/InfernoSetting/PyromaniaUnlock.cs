@@ -50,14 +50,14 @@ namespace KitchenInferno.Customs.InfernoSetting
                 }
             },
 
-            new GlobalEffect()
-            {
-                EffectCondition = new CEffectAlways(),
-                EffectType = new CFireSpreadModifier()
-                {
-                    SpreadChanceModifier = 2f
-                }
-            },
+            //new GlobalEffect()
+            //{
+            //    EffectCondition = new CEffectAlways(),
+            //    EffectType = new CFireSpreadModifier()
+            //    {
+            //        SpreadChanceModifier = 2f
+            //    }
+            //},
 
             new StatusEffect()
             {
