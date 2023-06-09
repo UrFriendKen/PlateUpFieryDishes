@@ -4,6 +4,7 @@ using KitchenMods;
 using System.Linq;
 using Unity.Collections;
 using Unity.Entities;
+using static KitchenInferno.DestroyItemOnFireAfterDuration;
 
 namespace KitchenInferno
 {
@@ -48,8 +49,9 @@ namespace KitchenInferno
             for (int i = 0; i < holders.Length; i++)
             {
                 CItemHolder holder = holders[i];
-                if (holder.HeldItem == default || Has<CItemOnFire>(holder.HeldItem) || !Require(holder.HeldItem, out CItem item) || !CanBeSetOnFire(item))
+                if (holder.HeldItem == default || Has<CItemOnFire>(holder.HeldItem) || Has<CHasBeenDestroyed>(holder.HeldItem) || !Require(holder.HeldItem, out CItem item) || !CanBeSetOnFire(item))
                     continue;
+
                 Set(holder.HeldItem, new CItemOnFire()
                 {
                     BurnSpeed = burnSpeed
@@ -57,7 +59,7 @@ namespace KitchenInferno
 
                 Set(holder.HeldItem, new CDestroyItemOnFireDuration()
                 {
-                    TotalTime = 10f
+                    TotalTime = Main.BASE_FOOD_DESTROY_TIME
                 });
             }
         }

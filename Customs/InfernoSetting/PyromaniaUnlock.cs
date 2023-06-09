@@ -3,7 +3,6 @@ using KitchenData;
 using KitchenLib.Customs;
 using KitchenLib.References;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace KitchenInferno.Customs.InfernoSetting
 {
@@ -28,7 +27,7 @@ namespace KitchenInferno.Customs.InfernoSetting
                 EffectCondition = new CEffectAlways(),
                 EffectType = new CFlammableItemsModifier()
                 {
-                    BurnSpeedChange = 0.5f
+                    BurnSpeedChange = 0.667f
                 }
             },
 
@@ -47,7 +46,7 @@ namespace KitchenInferno.Customs.InfernoSetting
                 EffectCondition = new CEffectAtNight(),
                 EffectType = new CFlammableItemsModifier()
                 {
-                    BurnSpeedChange = 1f
+                    BurnSpeedChange = 0.5f
                 }
             },
 

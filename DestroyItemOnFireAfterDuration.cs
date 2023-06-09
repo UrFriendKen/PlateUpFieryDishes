@@ -5,6 +5,7 @@ using KitchenLib.References;
 using KitchenLib.Utils;
 using KitchenMods;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using Unity.Collections;
 using Unity.Entities;
 
@@ -13,7 +14,11 @@ namespace KitchenInferno
     [UpdateInGroup(typeof(DestructionGroup))]
     public class DestroyItemOnFireAfterDuration : DaySystem, IModSystem
     {
+        [StructLayout(LayoutKind.Sequential, Size = 1)]
+        public struct CHasBeenDestroyed : IComponentData, IModComponent { }
+
         EntityQuery DestroyableItems;
+        EntityQuery DestroyedItemsToBeReset;
         Dictionary<int, Item> SpecialDestroyedItems;
 
         protected override void Initialise()
@@ -21,6 +26,10 @@ namespace KitchenInferno
             base.Initialise();
             DestroyableItems = GetEntityQuery(new QueryHelper()
                 .All(typeof(CItem), typeof(CItemOnFire), typeof(CDestroyItemOnFireDuration)));
+
+            DestroyedItemsToBeReset = GetEntityQuery(new QueryHelper()
+                .All(typeof(CHasBeenDestroyed))
+                .None(typeof(CChangeItemType)));
 
             SpecialDestroyedItems = new Dictionary<int, Item>()
             {
@@ -31,6 +40,8 @@ namespace KitchenInferno
 
         protected override void OnUpdate()
         {
+            EntityManager.RemoveComponent<CHasBeenDestroyed>(DestroyedItemsToBeReset);
+
             using NativeArray<Entity> entities = DestroyableItems.ToEntityArray(Allocator.Temp);
             using NativeArray<CItem> items = DestroyableItems.ToComponentDataArray<CItem>(Allocator.Temp);
             using NativeArray<CItemOnFire> onFires = DestroyableItems.ToComponentDataArray<CItemOnFire>(Allocator.Temp);
@@ -48,6 +59,7 @@ namespace KitchenInferno
                 {
                     EntityManager.RemoveComponent<CItemOnFire>(entity);
                     EntityManager.RemoveComponent<CDestroyItemOnFireDuration>(entity);
+                    Set<CHasBeenDestroyed>(entity);
                     Set(entity, new CChangeItemType()
                     {
                         NewID = DetermineDestroyedItemID(item)

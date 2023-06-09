@@ -44,6 +44,8 @@ namespace KitchenInferno
 
         public static readonly RestaurantStatus PYROMANIA_EFFECT_STATUS = (RestaurantStatus)VariousUtils.GetID("pyromaniaEffect");
 
+        internal const float BASE_FOOD_DESTROY_TIME = 5f;
+
         protected override void OnInitialise()
         {
             LogWarning($"{MOD_GUID} v{MOD_VERSION} in use!");
@@ -169,20 +171,20 @@ namespace KitchenInferno
                     appliance.Properties.Add(new CFireImmune());
                 }
 
-                if (args.gamedata.TryGet(UnlockReferences.QuickerBurning, out UnlockCard highStandardsUnlock))
-                {
-                    if (!highStandardsUnlock.Effects.Where(x => x.GetType() == typeof(GlobalEffect)).Cast<GlobalEffect>().Select(x => x.EffectType.GetType()).Contains(typeof(CFlammableItemsModifier)))
-                    {
-                        highStandardsUnlock.Effects.Add(new GlobalEffect()
-                        {
-                            EffectCondition = new CEffectAlways(),
-                            EffectType = new CFlammableItemsModifier()
-                            {
-                                BurnSpeedChange = 1f
-                            }
-                        });
-                    }
-                }
+                //if (args.gamedata.TryGet(UnlockReferences.QuickerBurning, out UnlockCard highStandardsUnlock))
+                //{
+                //    if (!highStandardsUnlock.Effects.Where(x => x.GetType() == typeof(GlobalEffect)).Cast<GlobalEffect>().Select(x => x.EffectType.GetType()).Contains(typeof(CFlammableItemsModifier)))
+                //    {
+                //        highStandardsUnlock.Effects.Add(new GlobalEffect()
+                //        {
+                //            EffectCondition = new CEffectAlways(),
+                //            EffectType = new CFlammableItemsModifier()
+                //            {
+                //                BurnSpeedChange = 1f
+                //            }
+                //        });
+                //    }
+                //}
             };
         }
         #region Logging
