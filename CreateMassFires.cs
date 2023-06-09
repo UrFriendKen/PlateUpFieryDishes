@@ -18,7 +18,8 @@ namespace KitchenInferno
                 ApplianceReferences.HobStarting,
                 ApplianceReferences.Hob,
                 ApplianceReferences.HobSafe,
-                ApplianceReferences.Oven
+                ApplianceReferences.Oven,
+                ApplianceReferences.Microwave
         };
 
         protected override void Initialise()
