@@ -18,6 +18,7 @@ namespace KitchenInferno
                 ApplianceReferences.HobStarting,
                 ApplianceReferences.Hob,
                 ApplianceReferences.HobSafe,
+                ApplianceReferences.HobDanger,
                 ApplianceReferences.Oven,
                 ApplianceReferences.Microwave
         };

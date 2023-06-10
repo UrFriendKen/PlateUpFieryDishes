@@ -25,7 +25,7 @@ namespace KitchenInferno
         // Mod Version must follow semver notation e.g. "1.2.3"
         public const string MOD_GUID = "IcedMilo.PlateUp.Inferno";
         public const string MOD_NAME = "Inferno";
-        public const string MOD_VERSION = "0.3.0";
+        public const string MOD_VERSION = "0.3.1";
         public const string MOD_AUTHOR = "IcedMilo";
         public const string MOD_GAMEVERSION = ">=1.1.5";
         // Game version this mod is designed for in semver
@@ -43,6 +43,7 @@ namespace KitchenInferno
         public const string FIRE_DISPLAY_INTENSITY_ID = "fireDisplayIntensity";
 
         public static readonly RestaurantStatus PYROMANIA_EFFECT_STATUS = (RestaurantStatus)VariousUtils.GetID("pyromaniaEffect");
+        public static readonly RestaurantStatus WILDFIRES_EFFECT_STATUS = (RestaurantStatus)VariousUtils.GetID("wildfiresEffect");
 
         internal const float BASE_FOOD_DESTROY_TIME = 5f;
 
@@ -67,7 +68,7 @@ namespace KitchenInferno
             CustomInfernoSetting = AddGameDataObject<InfernoSetting>();
 
             AddGameDataObject<PyroPatronsCopy>();
-            AddGameDataObject<FreakFiresCopy>();
+            AddGameDataObject<Wildfires>();
 
             LogInfo("Done loading game data.");
         }

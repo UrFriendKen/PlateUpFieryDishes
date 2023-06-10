@@ -62,12 +62,18 @@ namespace KitchenInferno.Customs.InfernoSetting
             new StatusEffect()
             {
                 Status = Main.PYROMANIA_EFFECT_STATUS
+            },
+
+            new StatusEffect()
+            {
+                Status = Main.WILDFIRES_EFFECT_STATUS
             }
         };
 
         public override bool IsUnlockable => false;
         public override UnlockGroup UnlockGroup => UnlockGroup.Special;
         public override CardType CardType => CardType.Setting;
+
         public override List<(Locale, UnlockInfo)> InfoList => new List<(Locale, UnlockInfo)>()
         {
             (Locale.English, new UnlockInfo()

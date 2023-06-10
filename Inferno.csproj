@@ -37,6 +37,14 @@
 	  <None Remove="plateup_mod_metadata.json" />
 	  <None Remove="*.png" />
 	</ItemGroup>
+	<ItemGroup>
+	  <Compile Remove="CreateMassFires.cs" />
+	  <Compile Remove="CreateMassFireSchedulePyromania.cs" />
+	</ItemGroup>
+	<ItemGroup>
+	  <None Include="CreateMassFires.cs" />
+	  <None Include="CreateMassFireSchedulePyromania.cs" />
+	</ItemGroup>
   
 	<ItemGroup>
 		<PackageReference Include="MessagePack.Annotations" Version="2.4.59" />

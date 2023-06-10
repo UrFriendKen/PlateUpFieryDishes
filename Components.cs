@@ -42,6 +42,7 @@ namespace KitchenInferno
     [StructLayout(LayoutKind.Sequential, Size = 1)]
     public struct CCatchFireOnFailurePyromania : IApplianceProperty, IAttachableProperty, IComponentData, IModComponent { }
 
+    // Unused
     public struct CScheduledMassFire : IComponentData, IModComponent
     {
         public float TimeOfDay;
