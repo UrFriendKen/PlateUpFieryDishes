@@ -13,6 +13,8 @@ namespace KitchenInferno
         private EntityQuery Players;
         private EntityQuery AppliancesOnFire;
 
+        private const float CHANCE_FACTOR = 0.5f;
+
         protected override void Initialise()
         {
             base.Initialise();
@@ -48,7 +50,7 @@ namespace KitchenInferno
                         isRangeOne == !sameRoom)
                     {
                         double num = (EntityManager.HasComponent<CHighlyFlammable>(primaryOccupant) ? 0.1 : 0.02);
-                        if ((double)Random.value < num * (double)dt * (double)player_factor)
+                        if ((double)Random.value < num * (double)dt * (double)player_factor * CHANCE_FACTOR)
                         {
                             EntityManager.AddComponent<CIsOnFire>(primaryOccupant);
                         }

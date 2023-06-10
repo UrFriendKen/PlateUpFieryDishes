@@ -47,4 +47,11 @@ namespace KitchenInferno
     {
         public float TimeOfDay;
     }
+
+    [StructLayout(LayoutKind.Sequential, Size = 1)]
+    public struct CSellRequiresFireOrder : IApplianceProperty, IAttachableProperty, IComponentData, IModComponent { }
+    public struct CFireStarter : IItemProperty, IAttachableProperty, IComponentData, IModComponent
+    {
+        public int Charges;
+    }
 }

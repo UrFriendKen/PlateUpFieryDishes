@@ -70,6 +70,10 @@ namespace KitchenInferno
             AddGameDataObject<PyroPatronsCopy>();
             AddGameDataObject<Wildfires>();
 
+            AddGameDataObject<IgniteItemProcess>();
+            AddGameDataObject<Torch>();
+            AddGameDataObject<TorchProvider>();
+
             LogInfo("Done loading game data.");
         }
 
