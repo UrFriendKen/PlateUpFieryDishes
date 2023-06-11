@@ -22,9 +22,13 @@ namespace KitchenInferno.Patches
         [HarmonyPostfix]
         static void GetPrefab_Postfix(ref LocalViewRouter __instance, ViewType view_type, ref GameObject __result)
         {
+            if ((view_type != ViewType.Item && view_type != ViewType.ItemCollectionView) || __result.transform.Find("Fire") != null)
+            {
+                return;
+            }
+
             if (fireItemInit || view_type == ViewType.Appliance)
                 return;
-
             if (_firePrefab == null)
             {
                 object applianceViewPrefabObj = m_GetPrefab?.Invoke(__instance, new object[] { ViewType.Appliance });
@@ -53,6 +57,12 @@ namespace KitchenInferno.Patches
                     fireItemVfx?.SetFloat("Active", Main.GetFireDisplayIntensity());
                 }
             }
+
+            GameObject fire = CreateFireItemInstance(__result);
+            VisualEffect fireVfx = fire.GetComponent<VisualEffect>();
+
+            ItemOnFireView itemOnFireView = __result.AddComponent<ItemOnFireView>();
+            itemOnFireView.FireVfx = fireVfx;
 
             GameObject CreateFireItemInstance(GameObject parentTo)
             {

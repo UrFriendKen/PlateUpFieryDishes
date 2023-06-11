@@ -40,14 +40,10 @@
 	<ItemGroup>
 	  <Compile Remove="CreateMassFires.cs" />
 	  <Compile Remove="CreateMassFireSchedulePyromania.cs" />
-	  <Compile Remove="ItemOnFireView.cs" />
-	  <Compile Remove="Patches\ItemCollectionView_Patch.cs" />
 	</ItemGroup>
 	<ItemGroup>
 	  <None Include="CreateMassFires.cs" />
 	  <None Include="CreateMassFireSchedulePyromania.cs" />
-	  <None Include="ItemOnFireView.cs" />
-	  <None Include="Patches\ItemCollectionView_Patch.cs" />
 	</ItemGroup>
   
 	<ItemGroup>

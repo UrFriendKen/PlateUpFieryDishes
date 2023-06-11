@@ -36,7 +36,6 @@ namespace KitchenInferno
                 {
                     if (Has<CAppliance>(tablePart))
                     {
-                        Main.LogInfo("Set Fire");
                         Set<CIsOnFire>(tablePart);
                         break;
                     }

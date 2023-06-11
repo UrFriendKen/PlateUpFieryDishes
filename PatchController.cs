@@ -32,7 +32,7 @@ namespace KitchenInferno
             {
                 return true;
             }
-            return _instance.Has<CItemOnFire>(request) == _instance.Has<CItemOnFire>(candidate);
+            return _instance.Has<CItemOnFire>(request) == _instance.Has<CItemOnFire>(candidate) && !_instance.Has<DestroyItemOnFireAfterDuration.CHasBeenDestroyed>(candidate);
         }
 
         internal static float GetFireSpreadModifier()
