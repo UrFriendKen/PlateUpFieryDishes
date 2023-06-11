@@ -15,7 +15,7 @@ namespace KitchenInferno.Customs
         {
             new StatusEffect()
             {
-                Status = RestaurantStatus.HalloweenTrickCustomersStartFiresWhenLeaving
+                Status = Main.PYRO_PATRONS_EFFECT_STATUS
             }
         };
         public override Unlock.RewardLevel ExpReward => Unlock.RewardLevel.Large;

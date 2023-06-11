@@ -44,6 +44,7 @@ namespace KitchenInferno
 
         public static readonly RestaurantStatus PYROMANIA_EFFECT_STATUS = (RestaurantStatus)VariousUtils.GetID("pyromaniaEffect");
         public static readonly RestaurantStatus WILDFIRES_EFFECT_STATUS = (RestaurantStatus)VariousUtils.GetID("wildfiresEffect");
+        public static readonly RestaurantStatus PYRO_PATRONS_EFFECT_STATUS = (RestaurantStatus)VariousUtils.GetID("newPyroPatronsEffect");
 
         internal const float BASE_FOOD_DESTROY_TIME = 5f;
 
