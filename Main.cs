@@ -38,6 +38,7 @@ namespace KitchenInferno
 
         internal static FireItem CustomFireItem;
         internal static InfernoSetting CustomInfernoSetting;
+        internal static IgniteItemProcess IgniteItemProcess;
 
         internal static PreferenceSystemManager PrefManager;
         public const string FIRE_DISPLAY_INTENSITY_ID = "fireDisplayIntensity";
@@ -71,7 +72,7 @@ namespace KitchenInferno
             AddGameDataObject<PyroPatronsCopy>();
             AddGameDataObject<Wildfires>();
 
-            AddGameDataObject<IgniteItemProcess>();
+            IgniteItemProcess = AddGameDataObject<IgniteItemProcess>();
             AddGameDataObject<Torch>();
             AddGameDataObject<TorchProvider>();
 
@@ -156,6 +157,15 @@ namespace KitchenInferno
                 ApplianceReferences.WheelieBin
             };
 
+            HashSet<int> addIgniteItemProcessAppliances = new HashSet<int>()
+            {
+                ApplianceReferences.HobStarting,
+                ApplianceReferences.Hob,
+                ApplianceReferences.HobDanger,
+                ApplianceReferences.Oven,
+                ApplianceReferences.Microwave
+            };
+
             // Perform actions when game data is built
             Events.BuildGameDataEvent += delegate (object s, BuildGameDataEventArgs args)
             {
@@ -176,6 +186,27 @@ namespace KitchenInferno
                         continue;
                     appliance.Properties.Add(new CFireImmune());
                 }
+
+                Process igniteItemProcessGDO = Main.IgniteItemProcess?.GameDataObject;
+                if (igniteItemProcessGDO != null)
+                {
+                    int igniteItemProcessID = igniteItemProcessGDO.ID;
+                    foreach (int applianceID in addIgniteItemProcessAppliances)
+                    {
+                        if (!args.gamedata.TryGet(applianceID, out Appliance appliance, warn_if_fail: true))
+                            continue;
+                        if (appliance.Processes.Select(x => x.Process.ID).Contains(igniteItemProcessID))
+                            continue;
+                        appliance.Processes.Add(new Appliance.ApplianceProcesses()
+                        {
+                            Process = igniteItemProcessGDO,
+                            IsAutomatic = false,
+                            Speed = 1f,
+                            Validity = ProcessValidity.Generic
+                        });
+                    }
+                }
+                
 
                 //if (args.gamedata.TryGet(UnlockReferences.QuickerBurning, out UnlockCard highStandardsUnlock))
                 //{

@@ -18,6 +18,13 @@ namespace KitchenInferno
     public class ConstantWildfires : DaySystem, IModSystem
     {
         private const float TIME_INTERVAL = 25f;
+
+        private const float MINIMUM_INTERVAL = 18.75f;
+        private const float INTERVAL_RANGE = 18.75f;
+        private const float DAY_DECAY_RATE = 0.01f;
+        private const float DAY_FACTOR_LIMIT = 0.7f;
+        private const float PLAYER_FACTOR_EFFECT = 5f;//0.4f;
+
         private const float PERCENT_AFFECTED = 0.6f;
         private readonly HashSet<int> AffectedAppliances = new HashSet<int>()
         {
@@ -29,11 +36,13 @@ namespace KitchenInferno
                 ApplianceReferences.Microwave
         };
 
-        private EntityQuery FlammableAppliances;
+        EntityQuery Players;
+        EntityQuery FlammableAppliances;
 
         protected override void Initialise()
         {
             base.Initialise();
+            Players = GetEntityQuery(typeof(CPlayer));
             FlammableAppliances = GetEntityQuery(new QueryHelper().All(typeof(CAppliance), typeof(CIsInteractive)).None(typeof(CFireImmune), typeof(CApplianceTable), typeof(CApplianceChair), typeof(CIsOnFire)));
         }
 
@@ -44,15 +53,23 @@ namespace KitchenInferno
                 return;
             }
 
-            bool isInit = Require(out SWildfiresTimeTracker timeTracker);
             float totalTime = base.Time.TotalTime;
 
+            bool isInit = Require(out SWildfiresTimeTracker timeTracker);
             if (isInit && totalTime - timeTracker.LastTime < timeTracker.Delay)
             {
                 return;
             }
+
+            int players = Players.CalculateEntityCount();
+            int day = GetOrDefault<SDay>().Day - (Has<SIsDayTime>() ? 1 : 0);
+            float minDayDelay = ((1 - DAY_FACTOR_LIMIT) * Mathf.Exp(-DAY_DECAY_RATE * day) + DAY_FACTOR_LIMIT) * MINIMUM_INTERVAL;
+            float additionalDelay = Mathf.Pow(Random.value, PLAYER_FACTOR_EFFECT * (players - 1) + 1f) * INTERVAL_RANGE;
+
+            Main.LogWarning($"{minDayDelay} + {additionalDelay}");
+
             timeTracker.LastTime = totalTime;
-            timeTracker.Delay = Random.Range(0.75f, 1.5f) * TIME_INTERVAL;
+            timeTracker.Delay = minDayDelay + additionalDelay;
 
             if (isInit)
             {

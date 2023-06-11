@@ -51,12 +51,14 @@ namespace KitchenInferno
 
                 for (int j = 0; j < orderItems.Length; j++)
                 {
-                    Main.LogInfo(orderItems[j].ItemID);
+                    CWaitingForItem orderItem = orderItems[j];
                     if (!orderItems[j].IsSide && (Random.value < chance || chance == 1f))
                     {
                         Main.LogError("Set fire");
-                        Set(orderItems[j].Item, default(CItemOnFire));
-                    }   
+                        orderItem.Reward = Mathf.CeilToInt(1.4f * orderItem.Reward);
+                        Set(orderItem.Item, default(CItemOnFire));
+                    }
+                    orderItems[j] = orderItem;
                 }
                 Set<CPerformed>(entities[i]);
             }

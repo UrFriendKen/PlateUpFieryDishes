@@ -1,13 +1,6 @@
 ﻿using Kitchen;
 using KitchenData;
-using KitchenInferno.Customs;
-using KitchenLib.Utils;
 using KitchenMods;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Unity.Collections;
 using Unity.Entities;
 
@@ -29,7 +22,7 @@ namespace KitchenInferno
 
         protected override void OnUpdate()
         {
-            int igniteItemProcessID = GDOUtils.GetCastedGDO<Process, IgniteItemProcess>()?.ID ?? 0;
+            int igniteItemProcessID = Main.IgniteItemProcess?.GameDataObject?.ID ?? 0;
             if (FireOrders.IsEmpty || igniteItemProcessID == 0)
                 return;
 
