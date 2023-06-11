@@ -51,7 +51,7 @@ namespace KitchenInferno
 
                 for (int j = 0; j < orderItems.Length; j++)
                 {
-                    if (Random.value < chance || chance == 1f)
+                    if (!orderItems[j].IsSide && (Random.value < chance || chance == 1f))
                     {
                         Set(orderItems[j].Item, default(CItemOnFire));
                     }   

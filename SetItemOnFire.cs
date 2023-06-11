@@ -66,7 +66,7 @@ namespace KitchenInferno
 
         private bool CanBeSetOnFire(int itemID)
         {
-            return GameData.Main.Get<Dish>().SelectMany(x => x.UnlocksMenuItems).Select(x => x.Item.ID).Distinct().Where(x => x != 0).Contains(itemID);
+            return GameData.Main.Get<Dish>().SelectMany(x => x.UnlocksMenuItems).Where(x => x.Phase != MenuPhase.Side).Select(x => x.Item.ID).Distinct().Where(x => x != 0).Contains(itemID);
         }
     }
 }

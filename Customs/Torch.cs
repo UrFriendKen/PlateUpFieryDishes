@@ -15,7 +15,7 @@ namespace KitchenInferno.Customs
         public override GameObject Prefab => PrefabGenerator.CreateConsumableProviderPrefab("Torch Provider", 5);
         public override List<IApplianceProperty> Properties => new List<IApplianceProperty>()
         {
-            GetCItemProvider(GDOUtils.GetCastedGDO<Item, Torch>()?.ID ?? 0, SUPPLY_COUNT, SUPPLY_COUNT,false, false, false,false, false, false, true),
+            GetCItemProvider(GDOUtils.GetCastedGDO<Item, Torch>()?.ID ?? 0, SUPPLY_COUNT, SUPPLY_COUNT, false, false, false, false, false, false, true),
             new CSellRequiresFireOrder()
         };
         public override List<Appliance.ApplianceProcesses> Processes => new List<Appliance.ApplianceProcesses>()
@@ -30,13 +30,13 @@ namespace KitchenInferno.Customs
         };
         public override PriceTier PriceTier => PriceTier.Medium;
         public override bool IsPurchasable => true;
-        public override bool SellOnlyAsDuplicate => true;
+        public override ShoppingTags ShoppingTags => ShoppingTags.Cooking;
         public override RarityTier RarityTier => RarityTier.Common;
         public override List<(Locale, ApplianceInfo)> InfoList => new List<(Locale, ApplianceInfo)>()
         {
             (Locale.English, new ApplianceInfo()
             {
-                Name = "Torch",
+                Name = "Torches",
                 Description = "Hot, hot, hot!",
                 Sections = new List<Appliance.Section>()
                 {
