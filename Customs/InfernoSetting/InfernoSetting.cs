@@ -11,7 +11,7 @@ namespace KitchenInferno.Customs.Inferno
     {
         public override int BaseGameDataObjectID => 2002876295;
         public override string UniqueNameID => "inferno";
-        public override GameObject Prefab => (GDOUtils.GetExistingGDO(AssetReference.HalloweenSetting) as RestaurantSetting).Prefab;
+        public override GameObject Prefab => Main.Bundle.LoadAsset<GameObject>("Inferno Snowglobe");//(GDOUtils.GetExistingGDO(AssetReference.HalloweenSetting) as RestaurantSetting).Prefab;
         public override List<(Locale, BasicInfo)> InfoList => new List<(Locale, BasicInfo)>()
         {
             (Locale.English, new BasicInfo()
@@ -20,7 +20,7 @@ namespace KitchenInferno.Customs.Inferno
                 Name = "Inferno"
             })
         };
-        public override WeatherMode WeatherMode => WeatherMode.Wind;
+        public override WeatherMode WeatherMode => WeatherMode.None;
         public override List<IDecorationConfiguration> Decorators => new List<IDecorationConfiguration>()
         {
             new InfernoDecorator.DecorationsConfiguration()
@@ -53,5 +53,12 @@ namespace KitchenInferno.Customs.Inferno
         };
         public override Unlock StartingUnlock => GDOUtils.GetCastedGDO<Unlock, PyromaniaUnlock>();
         public override UnlockPack UnlockPack => GDOUtils.GetCastedGDO<CompositeUnlockPack, InfernoCompositeUnlockPack>();
+
+        public override void OnRegister(RestaurantSetting gameDataObject)
+        {
+            MaterialUtils.ApplyMaterial(Prefab, "Volcano/Surface", new Material[] { MaterialUtils.GetExistingMaterial("Rock") });
+            MaterialUtils.ApplyMaterial(Prefab, "Volcano/Lava", new Material[] { MaterialUtils.GetCustomMaterial("Inferno Lava") });
+            MaterialUtils.ApplyMaterial(Prefab, "Volcano/Base", new Material[] { MaterialUtils.GetCustomMaterial("Dark Rock") });
+        }
     }
 }

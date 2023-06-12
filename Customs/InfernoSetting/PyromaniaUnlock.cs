@@ -71,6 +71,7 @@ namespace KitchenInferno.Customs.InfernoSetting
         };
 
         public override bool IsUnlockable => false;
+        public override Unlock.RewardLevel ExpReward => Unlock.RewardLevel.Large;
         public override UnlockGroup UnlockGroup => UnlockGroup.Special;
         public override CardType CardType => CardType.Setting;
 
@@ -80,8 +81,8 @@ namespace KitchenInferno.Customs.InfernoSetting
             {
                 Locale = Locale.English,
                 Name = "Pyromania",
-                Description = "",
-                FlavourText = ""
+                Description = "Fire spreads further, faster, and through walls. Hobs, and ovens, are more prone to fire. Food burns faster.",
+                FlavourText = "Remember, bring your fire extinguishers to the party!"
             })
         };
 

@@ -229,6 +229,7 @@ namespace KitchenInferno
                 {
                     //burnedFood.IsMergeableSide = true;
                     //AddBaseGameItemPossibleSide(burnedFood);
+                    burnedFood.ItemStorageFlags |= ItemStorage.StackableFood;
                     if (!burnedFood.Properties.Select(x => x.GetType()).Contains(typeof(CFireImmuneMenuItem)))
                         burnedFood.Properties.Add(new CFireImmuneMenuItem());
                 }

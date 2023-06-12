@@ -29,8 +29,8 @@ namespace KitchenInferno.Customs
             {
                 Locale = Locale.English,
                 Name = "Flaming Meals",
-                Description = $"{FireMealChance * 100f:0}",
-                FlavourText = ""
+                Description = "Customer can request for food on fire (Increases order chance in Inferno)",
+                FlavourText = "Mmm... Burns the tongue! Just how I like it."
             })
         };
     }
