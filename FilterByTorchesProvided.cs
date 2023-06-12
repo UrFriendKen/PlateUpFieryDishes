@@ -11,27 +11,17 @@ using Unity.Entities;
 namespace KitchenInferno
 {
     [UpdateAfter(typeof(CreateShopOptions))]
-    public class FilterByFireOrders : ShopBuilderFilter, IModSystem
+    public class FilterByTorchesProvided : ShopBuilderFilter, IModSystem
     {
-        private EntityQuery FireOrdersQuery;
-
-        private bool HasFireOrders;
-
         protected override void Initialise()
         {
             base.Initialise();
-            FireOrdersQuery = GetEntityQuery(typeof(CFireOrderChance));
         }
 
-        protected override void BeforeRun()
-        {
-            base.BeforeRun();
-            HasFireOrders = !FireOrdersQuery.IsEmpty;
-        }
         protected override void Filter(ref CShopBuilderOption option)
         {
-            if (!option.IsRemoved && option.Staple != ShopStapleType.BonusStaple && option.Staple != ShopStapleType.WhenMissing &&
-                GameData.Main.TryGet<Appliance>(option.Appliance, out var appliance) && IsRequired(appliance) && !HasFireOrders)
+            if (!Has<ProvideTorchesOnce.SPerformed>() && !option.IsRemoved && option.Staple != ShopStapleType.BonusStaple && option.Staple != ShopStapleType.WhenMissing &&
+                GameData.Main.TryGet<Appliance>(option.Appliance, out var appliance) && IsRequired(appliance))
             {
                 option.IsRemoved = true;
                 option.FilteredBy = this;
@@ -40,7 +30,7 @@ namespace KitchenInferno
 
         private bool IsRequired(Appliance appliance)
         {
-            if (appliance.Properties.Select(x => x.GetType()).Contains(typeof(CSellRequiresFireOrder)))
+            if (appliance.Properties.Select(x => x.GetType()).Contains(typeof(CFireStarterProvider)))
                 return true;
             return false;
         }

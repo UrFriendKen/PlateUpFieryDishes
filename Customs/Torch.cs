@@ -11,12 +11,12 @@ namespace KitchenInferno.Customs
     {
         public override string UniqueNameID => "torchProvider";
 
-        private const int SUPPLY_COUNT = 5;
-        public override GameObject Prefab => PrefabGenerator.CreateConsumableProviderPrefab("Torch Provider", 5);
+        private const int SUPPLY_COUNT = 2;
+        public override GameObject Prefab => PrefabGenerator.CreateConsumableProviderPrefab("Torch Provider", SUPPLY_COUNT);
         public override List<IApplianceProperty> Properties => new List<IApplianceProperty>()
         {
             GetCItemProvider(GDOUtils.GetCastedGDO<Item, Torch>()?.ID ?? 0, SUPPLY_COUNT, SUPPLY_COUNT, false, false, false, false, false, false, true),
-            new CSellRequiresFireOrder()
+            new CFireStarterProvider()
         };
         public override List<Appliance.ApplianceProcesses> Processes => new List<Appliance.ApplianceProcesses>()
         {

@@ -15,7 +15,7 @@ namespace KitchenInferno.Customs
 
         public override string UniqueNameID => "dirtyPlateWithBurnedFood";
         public override GameObject Prefab => Main.Bundle.LoadAsset<GameObject>("Plate - Dirty with burned food");
-        public override Item SplitSubItem => GDOUtils.GetExistingGDO(ItemReferences.BurnedFood) as Item;
+        public override Item SplitSubItem => BurnedFoodGDO;
         public override int SplitCount => 1;
         public override float SplitSpeed => 0.5f;
         public override List<Item> SplitDepletedItems => new List<Item>()

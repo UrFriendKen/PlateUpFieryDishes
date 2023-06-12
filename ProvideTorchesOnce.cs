@@ -14,21 +14,34 @@ namespace KitchenInferno
         public struct SPerformed : IComponentData, IModComponent { }
 
         EntityQuery FireOrders;
+        EntityQuery FireStarterProviders;
 
         protected override void Initialise()
         {
             base.Initialise();
             FireOrders = GetEntityQuery(typeof(CFireOrderChance));
+            FireStarterProviders = GetEntityQuery(typeof(CAppliance), typeof(CFireStarterProvider), typeof(CItemProvider));
         }
 
         protected override void OnUpdate()
         {
-            if (Has<SPerformed>() || FireOrders.IsEmpty)
+            if (Has<SPerformed>())
                 return;
-            int torchProviderID = GDOUtils.GetCastedGDO<Appliance, TorchProvider>()?.ID ?? 0;
-            if (torchProviderID != 0)
-                PostHelpers.CreateApplianceParcel(EntityManager, GetFallbackTile(), torchProviderID);
-            Set<SPerformed>();
+
+            bool isProvided = false;
+            if (!FireOrders.IsEmpty)
+            {
+                int torchProviderID = GDOUtils.GetCastedGDO<Appliance, TorchProvider>()?.ID ?? 0;
+                if (torchProviderID != 0)
+                    PostHelpers.CreateApplianceParcel(EntityManager, GetFallbackTile(), torchProviderID);
+                isProvided = true;
+            }
+            if (!FireStarterProviders.IsEmpty)
+            {
+                isProvided = true;
+            }
+            if (isProvided)
+                Set<SPerformed>();
         }
     }
 }

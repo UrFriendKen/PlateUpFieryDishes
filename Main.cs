@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using UnityEngine;
+using static Kitchen.ItemGroupView;
 
 // Namespace should have "Kitchen" in the beginning
 namespace KitchenInferno
@@ -25,7 +26,7 @@ namespace KitchenInferno
         // Mod Version must follow semver notation e.g. "1.2.3"
         public const string MOD_GUID = "IcedMilo.PlateUp.Inferno";
         public const string MOD_NAME = "Inferno";
-        public const string MOD_VERSION = "0.3.2";
+        public const string MOD_VERSION = "0.4.1";
         public const string MOD_AUTHOR = "IcedMilo";
         public const string MOD_GAMEVERSION = ">=1.1.5";
         // Game version this mod is designed for in semver
@@ -39,6 +40,7 @@ namespace KitchenInferno
         internal static FireItem CustomFireItem;
         internal static InfernoSetting CustomInfernoSetting;
         internal static IgniteItemProcess IgniteItemProcess;
+        //internal static BurntFoodCopy CustomBurntFood;
 
         internal static PreferenceSystemManager PrefManager;
         public const string FIRE_DISPLAY_INTENSITY_ID = "fireDisplayIntensity";
@@ -48,6 +50,10 @@ namespace KitchenInferno
         public static readonly RestaurantStatus PYRO_PATRONS_EFFECT_STATUS = (RestaurantStatus)VariousUtils.GetID("newPyroPatronsEffect");
 
         internal const float BASE_FOOD_DESTROY_TIME = 5f;
+
+        private static readonly FieldInfo fSubviewContainer = ReflectionUtils.GetField<ItemGroupView>("SubviewContainer");
+        private static readonly FieldInfo fSubviewPrefab = ReflectionUtils.GetField<ItemGroupView>("SubviewPrefab");
+        private static readonly FieldInfo fComponentGroups = ReflectionUtils.GetField<ItemGroupView>("ComponentGroups");
 
         protected override void OnInitialise()
         {
@@ -75,6 +81,8 @@ namespace KitchenInferno
             IgniteItemProcess = AddGameDataObject<IgniteItemProcess>();
             AddGameDataObject<Torch>();
             AddGameDataObject<TorchProvider>();
+
+            AddGameDataObject<BurntFoodUnlock>();
 
             LogInfo("Done loading game data.");
         }
@@ -187,7 +195,7 @@ namespace KitchenInferno
                     appliance.Properties.Add(new CFireImmune());
                 }
 
-                Process igniteItemProcessGDO = Main.IgniteItemProcess?.GameDataObject;
+                Process igniteItemProcessGDO = IgniteItemProcess?.GameDataObject;
                 if (igniteItemProcessGDO != null)
                 {
                     int igniteItemProcessID = igniteItemProcessGDO.ID;
@@ -206,22 +214,38 @@ namespace KitchenInferno
                         });
                     }
                 }
-                
 
-                //if (args.gamedata.TryGet(UnlockReferences.QuickerBurning, out UnlockCard highStandardsUnlock))
-                //{
-                //    if (!highStandardsUnlock.Effects.Where(x => x.GetType() == typeof(GlobalEffect)).Cast<GlobalEffect>().Select(x => x.EffectType.GetType()).Contains(typeof(CFlammableItemsModifier)))
-                //    {
-                //        highStandardsUnlock.Effects.Add(new GlobalEffect()
-                //        {
-                //            EffectCondition = new CEffectAlways(),
-                //            EffectType = new CFlammableItemsModifier()
-                //            {
-                //                BurnSpeedChange = 1f
-                //            }
-                //        });
-                //    }
-                //}
+                // Used with base game burned food
+                Item burnedFood = (Item)GDOUtils.GetExistingGDO(ItemReferences.BurnedFood);
+                if (burnedFood != null)
+                {
+                    //burnedFood.IsMergeableSide = true;
+                    //AddBaseGameItemPossibleSide(burnedFood);
+                    if (!burnedFood.Properties.Select(x => x.GetType()).Contains(typeof(CFireImmuneMenuItem)))
+                        burnedFood.Properties.Add(new CFireImmuneMenuItem());
+                }
+                void AddBaseGameItemPossibleSide(Item item)
+                {
+                    ItemGroup itemGroup = args.gamedata.Get<ItemGroup>(ItemReferences.BurgerPlated);
+                    ItemGroupView itemGroupView = itemGroup.Prefab.GetComponent<ItemGroupView>();
+                    GameObject subviewPrefab = (GameObject)fSubviewPrefab.GetValue(itemGroupView);
+                    ItemGroupView subviewItemGroupView = subviewPrefab.GetComponent<ItemGroupView>();
+                    List<ComponentGroup> componentGroups = (List<ComponentGroup>)fComponentGroups.GetValue(subviewItemGroupView);
+                    if (!componentGroups.Select(x => x.Item.ID).Contains(item.ID))
+                    {
+                        GameObject itemPrefabCopy = UnityEngine.Object.Instantiate(item.Prefab);
+                        Transform itemPrefabTransform = itemPrefabCopy.transform;
+                        itemPrefabTransform.parent = subviewPrefab.transform;
+                        itemPrefabTransform.localPosition = Vector3.zero;
+                        ItemGroupView.ComponentGroup componentGroup = new ItemGroupView.ComponentGroup()
+                        {
+                            GameObject = itemPrefabCopy,
+                            Item = item
+                        };
+                        componentGroups.Add(componentGroup);
+                        Main.LogInfo($"Added item prefab to side registry for item {item.ID} ({((UnityEngine.Object)(object)item).name}).");
+                    }
+                }
             };
         }
         #region Logging

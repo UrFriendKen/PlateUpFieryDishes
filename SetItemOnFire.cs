@@ -28,7 +28,7 @@ namespace KitchenInferno
 
         protected override void OnUpdate()
         {
-            if (FireOrderChances.IsEmpty || AppliancesOnFire.IsEmpty)
+            if (AppliancesOnFire.IsEmpty)
                 return;
 
             float burnSpeed = 1f;
@@ -49,7 +49,8 @@ namespace KitchenInferno
             for (int i = 0; i < holders.Length; i++)
             {
                 CItemHolder holder = holders[i];
-                if (holder.HeldItem == default || Has<CItemOnFire>(holder.HeldItem) || Has<CHasBeenDestroyed>(holder.HeldItem) || !Require(holder.HeldItem, out CItem item) || !CanBeSetOnFire(item))
+                if (holder.HeldItem == default || Has<CItemOnFire>(holder.HeldItem) || Has<CFireImmuneMenuItem>(holder.HeldItem) ||
+                    Has<CHasBeenDestroyed>(holder.HeldItem) || !Require(holder.HeldItem, out CItem item) || !CanBeSetOnFire(item))
                     continue;
 
                 Set(holder.HeldItem, new CItemOnFire()

@@ -21,6 +21,8 @@ namespace KitchenInferno
         EntityQuery DestroyedItemsToBeReset;
         Dictionary<int, Item> SpecialDestroyedItems;
 
+        int defaultDestroyedItemID = ItemReferences.BurnedFood;
+
         protected override void Initialise()
         {
             base.Initialise();
@@ -87,7 +89,7 @@ namespace KitchenInferno
             }
             if (result == 0)
             {
-                result = ItemReferences.BurnedFood;
+                result = defaultDestroyedItemID;
             }
             return result;
         }

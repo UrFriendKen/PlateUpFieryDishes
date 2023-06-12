@@ -49,9 +49,12 @@ namespace KitchenInferno
     }
 
     [StructLayout(LayoutKind.Sequential, Size = 1)]
-    public struct CSellRequiresFireOrder : IApplianceProperty, IAttachableProperty, IComponentData, IModComponent { }
+    public struct CFireStarterProvider : IApplianceProperty, IAttachableProperty, IComponentData, IModComponent { }
     public struct CFireStarter : IItemProperty, IAttachableProperty, IComponentData, IModComponent
     {
         public int Charges;
     }
+
+    [StructLayout(LayoutKind.Sequential, Size = 1)]
+    public struct CFireImmuneMenuItem : IItemProperty, IAttachableProperty, IComponentData, IModComponent { }
 }
