@@ -74,6 +74,14 @@ namespace KitchenInferno
             AddGameDataObject<InfernoSpecialCard>();
             AddGameDataObject<InfernoCompositeUnlockPack>();
             CustomInfernoSetting = AddGameDataObject<InfernoSetting>();
+            AddGameDataObject<InfernoBridge>();
+            AddGameDataObject<InfernoWall>();
+            AddGameDataObject<InfernoPillar>();
+            AddGameDataObject<InfernoFloor>();
+            AddGameDataObject<LavaGround>();
+            AddGameDataObject<LavaRock>();
+            AddGameDataObject<LavaRockNarrow>();
+            AddGameDataObject<LavaRockLarge>();
 
             AddGameDataObject<PyroPatronsCopy>();
             AddGameDataObject<Wildfires>();

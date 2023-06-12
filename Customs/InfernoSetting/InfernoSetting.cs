@@ -1,8 +1,6 @@
-﻿using Kitchen;
-using KitchenData;
+﻿using KitchenData;
 using KitchenInferno.Customs.InfernoSetting;
 using KitchenLib.Customs;
-using KitchenLib.References;
 using KitchenLib.Utils;
 using System.Collections.Generic;
 using UnityEngine;
@@ -31,15 +29,25 @@ namespace KitchenInferno.Customs.Inferno
                 {
                     new InfernoDecorator.DecorationsConfiguration.Scatter()
                     {
-                        Probability = 1,
-                        Appliance = GDOUtils.GetExistingGDO(ApplianceReferences.HalloweenTrees) as Appliance
+                        Probability = 0.15f,
+                        Appliance = GDOUtils.GetCastedGDO<Appliance, LavaRock>()
+                    },
+                    new InfernoDecorator.DecorationsConfiguration.Scatter()
+                    {
+                        Probability = 0.15f,
+                        Appliance = GDOUtils.GetCastedGDO<Appliance, LavaRockNarrow>()
+                    },
+                    new InfernoDecorator.DecorationsConfiguration.Scatter()
+                    {
+                        Probability = 0.15f,
+                        Appliance = GDOUtils.GetCastedGDO<Appliance, LavaRockLarge>()
                     }
                 },
-                FrontTile = GDOUtils.GetExistingGDO(ApplianceReferences.HalloweenFloor) as Appliance,
-                Bridge = GDOUtils.GetExistingGDO(ApplianceReferences.HalloweenBridge) as Appliance,
-                Fog = GDOUtils.GetExistingGDO(ApplianceReferences.HalloweenFog) as Appliance,
-                FrontWall = GDOUtils.GetExistingGDO(ApplianceReferences.HalloweenWall) as Appliance,
-                FrontPillar = GDOUtils.GetExistingGDO(ApplianceReferences.HalloweenPillar) as Appliance,
+                FrontTile = GDOUtils.GetCastedGDO<Appliance, InfernoFloor>(),
+                Bridge = GDOUtils.GetCastedGDO<Appliance, InfernoBridge>(),
+                FrontWall = GDOUtils.GetCastedGDO<Appliance, InfernoWall>(),
+                FrontPillar = GDOUtils.GetCastedGDO<Appliance, InfernoPillar>(),
+                Ground = GDOUtils.GetCastedGDO<Appliance, LavaGround>(),
                 BorderSpacing = 1f
             }
         };

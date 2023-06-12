@@ -23,11 +23,11 @@ namespace KitchenInferno.Customs.Inferno
 
             public Appliance Bridge;
 
-            public Appliance Fog;
-
             public Appliance FrontWall;
 
             public Appliance FrontPillar;
+
+            public Appliance Ground;
 
             public float BorderSpacing;
 
@@ -40,34 +40,52 @@ namespace KitchenInferno.Customs.Inferno
             {
                 Bounds bounds = Blueprint.GetBounds();
                 Vector3 frontDoor = Blueprint.GetFrontDoor();
+                NewPiece(decorationsConfiguration.Ground, 0f, 0f);
                 for (float num = bounds.min.x - 4f; num <= bounds.max.x + 4f; num += 1f)
                 {
+                    bool drawnBottom = false;
+                    bool drawnTop = false;
                     foreach (DecorationsConfiguration.Scatter scatter in decorationsConfiguration.Scatters)
                     {
-                        if (Random.value < scatter.Probability)
+                        if (!drawnBottom && Random.value < scatter.Probability)
                         {
-                            NewPiece(scatter.Appliance, num, bounds.min.y - 6f);
+                            drawnBottom = true;
+                            NewRandomScatter(scatter.Appliance, num, bounds.min.y - 6f);
                         }
-                        if (Random.value < scatter.Probability)
+                        if (!drawnTop && Random.value < scatter.Probability)
                         {
-                            NewPiece(scatter.Appliance, num, bounds.max.y + 3f);
+                            drawnTop = true;
+                            NewRandomScatter(scatter.Appliance, num, bounds.max.y + 3f);
                         }
                     }
                 }
                 for (float num2 = bounds.min.y - 2f; num2 <= bounds.max.y + 2f; num2 += 1f)
                 {
+                    bool drawnLeft = false;
+                    bool drawnRight = false;
                     foreach (DecorationsConfiguration.Scatter scatter2 in decorationsConfiguration.Scatters)
                     {
-                        if (num2 > bounds.min.y && Random.value < scatter2.Probability)
+                        if (!drawnLeft && num2 > bounds.min.y && Random.value < scatter2.Probability)
                         {
-                            NewPiece(scatter2.Appliance, bounds.min.x - 3f, num2);
+                            drawnLeft = true;
+                            NewRandomScatter(scatter2.Appliance, bounds.min.x - 3f, num2);
                         }
-                        if (Random.value < scatter2.Probability)
+                        if (!drawnRight && Random.value < scatter2.Probability)
                         {
-                            NewPiece(scatter2.Appliance, bounds.max.x + 4f, num2);
+                            drawnRight = true;
+                            NewRandomScatter(scatter2.Appliance, bounds.max.x + 4f, num2);
                         }
                     }
                 }
+
+                void NewRandomScatter(Appliance appliance, float x, float y)
+                {
+                    Vector2 randomXZOffset = Random.insideUnitCircle * 0.3f;
+                    //Vector3 randomScale = (Random.insideUnitSphere * 0.2f) + (Vector3.one * 0.1f);
+                    Vector2 randomXZfacing = Random.insideUnitCircle.normalized;
+                    NewPiece(appliance, x + randomXZOffset.x, y + randomXZOffset.y, Quaternion.LookRotation(new Vector3(randomXZfacing.x, 0f, randomXZfacing.y), Vector3.up));
+                }
+
                 for (float num3 = bounds.min.y - 2f; num3 <= bounds.max.y + 12f; num3 += 1f)
                 {
                     NewPiece(decorationsConfiguration.FrontTile, num3, bounds.min.y - 1f);
@@ -102,7 +120,6 @@ namespace KitchenInferno.Customs.Inferno
                 NewPiece(AssetReference.OutdoorMovementBlocker, bounds.max.x + 1f, bounds.min.y - 2f);
                 NewPiece(Profile.ExternalBin, frontDoor.x, frontDoor.z - 3f);
                 NewPiece(decorationsConfiguration.FrontTile, frontDoor.x, frontDoor.z - 3f);
-                NewPiece(decorationsConfiguration.Fog, 0f, 0f);
                 return true;
             }
             return false;
