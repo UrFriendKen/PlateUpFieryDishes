@@ -64,8 +64,6 @@ namespace KitchenInferno
             float minDayDelay = ((1 - DAY_FACTOR_LIMIT) * Mathf.Exp(-DAY_DECAY_RATE * day) + DAY_FACTOR_LIMIT) * MINIMUM_INTERVAL;
             float additionalDelay = Mathf.Pow(Random.value, PLAYER_FACTOR_EFFECT * (players - 1) + 1f) * INTERVAL_RANGE;
 
-            Main.LogWarning($"{minDayDelay} + {additionalDelay}");
-
             timeTracker.LastTime = totalTime;
             timeTracker.Delay = minDayDelay + additionalDelay;
 

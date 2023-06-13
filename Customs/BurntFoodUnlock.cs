@@ -19,7 +19,6 @@ namespace KitchenInferno.Customs
         {
             new Dish.MenuItem
             {
-                //Item = GDOUtils.GetCastedGDO<Item, BurntCube>(),
                 Item = (Item)GDOUtils.GetExistingGDO(ItemReferences.BurnedFood),
                 Phase = MenuPhase.Dessert,
                 Weight = 1

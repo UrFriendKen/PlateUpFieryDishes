@@ -34,7 +34,6 @@ namespace KitchenInferno
                     }
                     continue;
                 }
-                Main.LogInfo(framesDelay.Remaining);
                 framesDelay.Remaining -= 1;
                 if (framesDelay.Remaining <= 0)
                 {

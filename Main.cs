@@ -26,7 +26,7 @@ namespace KitchenInferno
         // Mod Version must follow semver notation e.g. "1.2.3"
         public const string MOD_GUID = "IcedMilo.PlateUp.Inferno";
         public const string MOD_NAME = "Inferno";
-        public const string MOD_VERSION = "0.4.1";
+        public const string MOD_VERSION = "0.4.2";
         public const string MOD_AUTHOR = "IcedMilo";
         public const string MOD_GAMEVERSION = ">=1.1.5";
         // Game version this mod is designed for in semver
@@ -94,6 +94,11 @@ namespace KitchenInferno
             LogInfo("Done loading game data.");
         }
 
+        private void AddMaterials()
+        {
+            AddCustomMaterial<InfernoSurfaceMaterial>();
+        }
+
         protected override void OnUpdate()
         {
         }
@@ -113,6 +118,7 @@ namespace KitchenInferno
             LogInfo("Done loading asset bundle.");
 
             // Register custom GDOs
+            AddMaterials();
             AddGameData();
 
             PrefManager = new PreferenceSystemManager(MOD_GUID, MOD_NAME);

@@ -13,7 +13,7 @@ namespace KitchenInferno.Customs.InfernoSetting
         public override GameObject Prefab => Main.Bundle.LoadAsset<GameObject>("Lava Ground");
         public override void SetupPrefab(GameObject prefab)
         {
-            Material[] matArr = new Material[] { MaterialUtils.GetCustomMaterial("Inferno Lava") };
+            Material[] matArr = new Material[] { MaterialUtils.GetCustomMaterial("Inferno Surface") };
             MaterialUtils.ApplyMaterial(prefab, "Lava Ground", matArr);
         }
     }

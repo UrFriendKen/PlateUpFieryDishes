@@ -54,7 +54,6 @@ namespace KitchenInferno
                     CWaitingForItem orderItem = orderItems[j];
                     if (!orderItems[j].IsSide && (Random.value < chance || chance == 1f))
                     {
-                        Main.LogError("Set fire");
                         orderItem.Reward = Mathf.CeilToInt(1.4f * orderItem.Reward);
                         Set(orderItem.Item, default(CItemOnFire));
                     }
