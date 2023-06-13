@@ -17,6 +17,7 @@ namespace KitchenInferno.Patches
         static GameObject _firePrefab;
 
         static bool fireItemInit = false;
+        static bool torchesInit = false;
 
         [HarmonyPatch(typeof(LocalViewRouter), "GetPrefab")]
         [HarmonyPostfix]
@@ -58,13 +59,35 @@ namespace KitchenInferno.Patches
                 }
             }
 
+            if (!torchesInit)
+            {
+                torchesInit = true;
+                Item torchGDO = GDOUtils.GetCastedGDO<Item, Torch>();
+                if (torchGDO != null)
+                {
+                    GameObject torchHead = torchGDO.Prefab?.transform.Find("Head")?.gameObject;
+                    if (torchHead != null)
+                    {
+                        GameObject torchFire = CreateFireItemInstance(torchHead);
+                        torchFire.name = "Fire";
+                        torchFire.transform.localPosition = new Vector3(0f, 0f, 0.4f);
+                        torchFire.transform.localRotation = Quaternion.Euler(90f, 0f, 0f);
+                        VisualEffect torchFireVfx = torchFire.GetComponent<VisualEffect>();
+                        torchFireVfx?.SetFloat("Active", 0);
+
+                        FireEffectControllerView fireEffectController = torchHead.AddComponent<FireEffectControllerView>();
+                        fireEffectController.Fire = torchFireVfx;
+                    }
+                }
+            }
+
             GameObject fire = CreateFireItemInstance(__result);
             VisualEffect fireVfx = fire.GetComponent<VisualEffect>();
 
             ItemOnFireView itemOnFireView = __result.AddComponent<ItemOnFireView>();
             itemOnFireView.FireVfx = fireVfx;
 
-            GameObject CreateFireItemInstance(GameObject parentTo)
+            GameObject CreateFireItemInstance(GameObject parentTo, float scale = 0.4f)
             {
                 GameObject fire = GameObject.Instantiate(_firePrefab);
                 fire.name = "Fire";
@@ -73,7 +96,7 @@ namespace KitchenInferno.Patches
                     fire.transform.SetParent(parentTo.transform, false);
                 }
                 fire.transform.localPosition = Vector3.zero;
-                fire.transform.localScale = Vector3.one * 0.4f;
+                fire.transform.localScale = Vector3.one * scale;
                 fire.transform.localRotation = Quaternion.identity;
 
                 return fire;
