@@ -40,7 +40,6 @@ namespace KitchenInferno
         internal static FireItem CustomFireItem;
         internal static InfernoSetting CustomInfernoSetting;
         internal static IgniteItemProcess IgniteItemProcess;
-        //internal static BurntFoodCopy CustomBurntFood;
 
         internal static PreferenceSystemManager PrefManager;
         public const string FIRE_DISPLAY_INTENSITY_ID = "fireDisplayIntensity";

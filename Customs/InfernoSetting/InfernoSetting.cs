@@ -11,13 +11,63 @@ namespace KitchenInferno.Customs.Inferno
     {
         public override int BaseGameDataObjectID => 2002876295;
         public override string UniqueNameID => "inferno";
-        public override GameObject Prefab => Main.Bundle.LoadAsset<GameObject>("Inferno Snowglobe");//(GDOUtils.GetExistingGDO(AssetReference.HalloweenSetting) as RestaurantSetting).Prefab;
+        public override GameObject Prefab => Main.Bundle.LoadAsset<GameObject>("Inferno Snowglobe");
         public override List<(Locale, BasicInfo)> InfoList => new List<(Locale, BasicInfo)>()
         {
             (Locale.English, new BasicInfo()
             {
                 Locale = Locale.English,
                 Name = "Inferno"
+            }),
+            (Locale.French, new BasicInfo()
+            {
+                Locale = Locale.French,
+                Name = "Enfer"
+            }),
+            (Locale.German, new BasicInfo()
+            {
+                Locale = Locale.German,
+                Name = "Inferno"
+            }),
+            (Locale.Spanish, new BasicInfo()
+            {
+                Locale = Locale.Spanish,
+                Name = "Infierno"
+            }),
+            (Locale.Polish, new BasicInfo()
+            {
+                Locale = Locale.Polish,
+                Name = "Piekło"
+            }),
+            (Locale.PortugueseBrazil, new BasicInfo()
+            {
+                Locale = Locale.PortugueseBrazil,
+                Name = "Inferno"
+            }),
+            (Locale.Japanese, new BasicInfo()
+            {
+                Locale = Locale.Japanese,
+                Name = "インフェルノ"
+            }),
+            (Locale.ChineseSimplified, new BasicInfo()
+            {
+                Locale = Locale.ChineseSimplified,
+                Name = "地狱火"
+            }),
+            (Locale.ChineseTraditional, new BasicInfo()
+            {
+                Locale = Locale.ChineseTraditional,
+                Name = "地獄火"
+            }),
+            (Locale.Korean, new BasicInfo()
+            {
+                Locale = Locale.Korean,
+                Name = "지옥"
+            }),
+            (Locale.Turkish, new BasicInfo()
+            {
+                Locale = Locale.Turkish,
+                Name = "Cehennem"
             })
         };
         public override WeatherMode WeatherMode => WeatherMode.None;
