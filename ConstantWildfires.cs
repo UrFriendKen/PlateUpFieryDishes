@@ -15,7 +15,7 @@ namespace KitchenInferno
         public float Delay;
     }
 
-    public class ConstantWildfires : DaySystem, IModSystem
+    public class ConstantWildfires : RestaurantSystem, IModSystem
     {
         private const float MINIMUM_INTERVAL = 18.75f;
         private const float INTERVAL_RANGE = 18.75f;
@@ -36,18 +36,21 @@ namespace KitchenInferno
 
         EntityQuery Players;
         EntityQuery FlammableAppliances;
+        EntityQuery WildfiresTimeTracker;
 
         protected override void Initialise()
         {
             base.Initialise();
             Players = GetEntityQuery(typeof(CPlayer));
             FlammableAppliances = GetEntityQuery(new QueryHelper().All(typeof(CAppliance), typeof(CIsInteractive)).None(typeof(CFireImmune), typeof(CApplianceTable), typeof(CApplianceChair), typeof(CIsOnFire)));
+            WildfiresTimeTracker = GetEntityQuery(typeof(SWildfiresTimeTracker));
         }
 
         protected override void OnUpdate()
         {
-            if (!HasStatus(Main.WILDFIRES_EFFECT_STATUS))
+            if (!HasStatus(Main.WILDFIRES_EFFECT_STATUS) || Has<SIsNightTime>())
             {
+                EntityManager.DestroyEntity(WildfiresTimeTracker);
                 return;
             }
 
