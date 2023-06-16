@@ -26,7 +26,7 @@ namespace KitchenInferno
         // Mod Version must follow semver notation e.g. "1.2.3"
         public const string MOD_GUID = "IcedMilo.PlateUp.Inferno";
         public const string MOD_NAME = "Inferno";
-        public const string MOD_VERSION = "0.4.3";
+        public const string MOD_VERSION = "0.4.4";
         public const string MOD_AUTHOR = "IcedMilo";
         public const string MOD_GAMEVERSION = ">=1.1.5";
         // Game version this mod is designed for in semver
@@ -259,6 +259,11 @@ namespace KitchenInferno
                         componentGroups.Add(componentGroup);
                         Main.LogInfo($"Added item prefab to side registry for item {item.ID} ({((UnityEngine.Object)(object)item).name}).");
                     }
+                }
+
+                if (CustomInfernoSetting?.GameDataObject != null)
+                {
+                    CustomSettingsAndLayouts.Registry.GrantCustomSetting(CustomInfernoSetting?.GameDataObject);
                 }
             };
         }
