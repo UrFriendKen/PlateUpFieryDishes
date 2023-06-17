@@ -26,7 +26,7 @@ namespace KitchenInferno
         // Mod Version must follow semver notation e.g. "1.2.3"
         public const string MOD_GUID = "IcedMilo.PlateUp.Inferno";
         public const string MOD_NAME = "Inferno";
-        public const string MOD_VERSION = "0.4.4";
+        public const string MOD_VERSION = "0.4.5";
         public const string MOD_AUTHOR = "IcedMilo";
         public const string MOD_GAMEVERSION = ">=1.1.5";
         // Game version this mod is designed for in semver
@@ -38,6 +38,8 @@ namespace KitchenInferno
         public Main() : base(MOD_GUID, MOD_NAME, MOD_AUTHOR, MOD_VERSION, MOD_GAMEVERSION, Assembly.GetExecutingAssembly()) { }
 
         internal static FireItem CustomFireItem;
+        internal static DummyFireOrderAppliance CustomDummyFireOrderAppliance;
+        internal static DummyActiveFireAppliance CustomDummyActiveFireAppliance;
         internal static InfernoSetting CustomInfernoSetting;
         internal static IgniteItemProcess IgniteItemProcess;
 
@@ -64,6 +66,8 @@ namespace KitchenInferno
             LogInfo("Attempting to register game data...");
 
             CustomFireItem = AddGameDataObject<FireItem>();
+            CustomDummyFireOrderAppliance = AddGameDataObject<DummyFireOrderAppliance>();
+            CustomDummyActiveFireAppliance = AddGameDataObject<DummyActiveFireAppliance>();
 
             AddGameDataObject<DirtyPlateWithBurnedFood>();
 

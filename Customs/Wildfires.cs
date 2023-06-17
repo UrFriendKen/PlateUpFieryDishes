@@ -32,7 +32,7 @@ namespace KitchenInferno.Customs
             (Locale.English, new UnlockInfo()
             {
                 Name = "Wild Fires",
-                Description = "Randomly sets cooking appliances on fire",
+                Description = "Randomly sets some appliances on fire",
                 FlavourText = "Who forgot to turn the gas off?!"
             }),
             (Locale.French, new UnlockInfo()

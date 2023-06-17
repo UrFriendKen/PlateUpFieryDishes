@@ -31,7 +31,17 @@ namespace KitchenInferno
                 ApplianceReferences.HobSafe,
                 ApplianceReferences.HobDanger,
                 ApplianceReferences.Oven,
-                ApplianceReferences.Microwave
+                ApplianceReferences.Microwave,
+
+                ApplianceReferences.Mixer,
+                ApplianceReferences.MixerPusher,
+                ApplianceReferences.MixerRapid,
+
+                ApplianceReferences.SinkStarting,
+                ApplianceReferences.SinkNormal,
+                ApplianceReferences.SinkSoak,
+                ApplianceReferences.SinkPower,
+                ApplianceReferences.SinkLarge
         };
 
         EntityQuery Players;

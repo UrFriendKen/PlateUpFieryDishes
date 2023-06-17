@@ -81,7 +81,7 @@ namespace KitchenInferno.Customs.InfernoSetting
             {
                 Locale = Locale.English,
                 Name = "Pyromania",
-                Description = "Fire spreads further, faster, and through walls. Hobs, and ovens, are more prone to fire. Food burns faster.",
+                Description = "Fire spreads further, faster, and through walls. Some appliance randomly catch fire. Food burns faster.",
                 FlavourText = "Remember, bring your fire extinguishers to the party!"
             }),
             (Locale.French, new UnlockInfo()

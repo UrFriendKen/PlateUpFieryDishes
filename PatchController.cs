@@ -2,18 +2,21 @@
 using KitchenMods;
 using Unity.Collections;
 using Unity.Entities;
+using UnityEngine;
 
 namespace KitchenInferno
 {
     public class PatchController : RestaurantSystem, IModSystem
     {
         private static PatchController _instance;
+        private EntityQuery Fires;
         private EntityQuery FireSpreadModifiers;
 
         protected override void Initialise()
         {
             base.Initialise();
             _instance = this;
+            Fires = GetEntityQuery(typeof(CAppliance), typeof(CIsOnFire));
             FireSpreadModifiers = GetEntityQuery(typeof(CFireSpreadModifier));
         }
 
@@ -50,6 +53,28 @@ namespace KitchenInferno
                 multiplier *= modifier < 0f ? 0f : modifier;
             }
             return multiplier < 0f ? 0f : multiplier;
+        }
+
+        internal static bool GetFireOrderBonus(CWaitingForItem satisfiedOrder, out int amount)
+        {
+            if (_instance?.Has<CItemOnFire>(satisfiedOrder.Item) ?? false)
+            {
+                amount = Mathf.CeilToInt(0.4f * satisfiedOrder.Reward);
+                return true;
+            }
+            amount = 0;
+            return false;
+        }
+
+        internal static bool GetActiveFireBonus(CWaitingForItem satisfiedOrder, out int amount)
+        {
+            if (_instance?.HasStatus(Main.PYROMANIA_EFFECT_STATUS) ?? false)
+            {
+                amount = Mathf.CeilToInt(_instance.Fires.CalculateEntityCount() / (_instance.Bounds.size.x + 1) / (_instance.Bounds.size.z + 1) * satisfiedOrder.Reward);
+                return true;
+            }
+            amount = 0;
+            return false;
         }
     }
 }
