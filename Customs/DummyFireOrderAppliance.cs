@@ -10,7 +10,7 @@ namespace KitchenInferno.Customs
         public override string UniqueNameID => "dummyFireOrderAppliance";
         public override List<(Locale, ApplianceInfo)> InfoList => new List<(Locale, ApplianceInfo)>()
         {
-            (Locale.English, LocalisationUtils.CreateApplianceInfo("Food On Fire", "", null, null))
+            (Locale.English, LocalisationUtils.CreateApplianceInfo("Food On Fire", "", new List<Appliance.Section>(), new List<string>()))
         };
         public override bool IsPurchasable => false;
         public override bool IsPurchasableAsUpgrade => false;
