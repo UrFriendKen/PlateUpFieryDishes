@@ -66,11 +66,12 @@ namespace KitchenInferno
             return false;
         }
 
+        private const float MAX_ACTIVE_FIRE_BONUS_FACTOR = 10f;
         internal static bool GetActiveFireBonus(CWaitingForItem satisfiedOrder, out int amount)
         {
             if (_instance?.HasStatus(Main.PYROMANIA_EFFECT_STATUS) ?? false)
             {
-                amount = Mathf.CeilToInt(_instance.Fires.CalculateEntityCount() / (_instance.Bounds.size.x + 1) / (_instance.Bounds.size.z + 1) * satisfiedOrder.Reward);
+                amount = Mathf.CeilToInt(_instance.Fires.CalculateEntityCount() / (_instance.Bounds.size.x + 1) / (_instance.Bounds.size.z + 1) * satisfiedOrder.Reward * MAX_ACTIVE_FIRE_BONUS_FACTOR);
                 return true;
             }
             amount = 0;

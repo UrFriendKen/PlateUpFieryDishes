@@ -17,13 +17,13 @@ namespace KitchenInferno
 
     public class ConstantWildfires : RestaurantSystem, IModSystem
     {
-        private const float MINIMUM_INTERVAL = 18.75f;
+        private const float MINIMUM_INTERVAL = 25f;
         private const float INTERVAL_RANGE = 18.75f;
         private const float DAY_DECAY_RATE = 0.01f;
         private const float DAY_FACTOR_LIMIT = 0.7f;
         private const float PLAYER_FACTOR_EFFECT = 0.4f;
 
-        private const float PERCENT_AFFECTED = 0.6f;
+        private const float PERCENT_AFFECTED = 0.4f;
         private readonly HashSet<int> AffectedAppliances = new HashSet<int>()
         {
                 ApplianceReferences.HobStarting,
@@ -36,12 +36,14 @@ namespace KitchenInferno
                 ApplianceReferences.Mixer,
                 ApplianceReferences.MixerPusher,
                 ApplianceReferences.MixerRapid,
+                ApplianceReferences.MixerHeated,
 
                 ApplianceReferences.SinkStarting,
                 ApplianceReferences.SinkNormal,
                 ApplianceReferences.SinkSoak,
                 ApplianceReferences.SinkPower,
-                ApplianceReferences.SinkLarge
+                ApplianceReferences.SinkLarge,
+                ApplianceReferences.DishWasher
         };
 
         EntityQuery Players;

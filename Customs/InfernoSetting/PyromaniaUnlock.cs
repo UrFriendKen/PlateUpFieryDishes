@@ -59,6 +59,18 @@ namespace KitchenInferno.Customs.InfernoSetting
             //    }
             //},
 
+            new GlobalEffect()
+            {
+                EffectCondition = new CEffectAlways(),
+                EffectType = new CTableModifier()
+                {
+                    OrderingModifiers = new OrderingValues()
+                    {
+                        PriceModifier = -0.25f
+                    }
+                }
+            },
+
             new StatusEffect()
             {
                 Status = Main.PYROMANIA_EFFECT_STATUS
