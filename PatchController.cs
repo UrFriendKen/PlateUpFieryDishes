@@ -1,4 +1,5 @@
 ﻿using Kitchen;
+using KitchenData;
 using KitchenMods;
 using Unity.Collections;
 using Unity.Entities;
@@ -55,11 +56,13 @@ namespace KitchenInferno
             return multiplier < 0f ? 0f : multiplier;
         }
 
+        private const float FIRE_ORDER_BONUS_FACTOR = 0.4f;
         internal static bool GetFireOrderBonus(CWaitingForItem satisfiedOrder, out int amount)
         {
             if (_instance?.Has<CItemOnFire>(satisfiedOrder.Item) ?? false)
             {
-                amount = Mathf.CeilToInt(0.4f * satisfiedOrder.Reward);
+                int baseAmount = GameData.Main.TryGet(satisfiedOrder.ItemID, out Item item) ? item.Reward : satisfiedOrder.Reward;
+                amount = Mathf.CeilToInt(FIRE_ORDER_BONUS_FACTOR * baseAmount);
                 return true;
             }
             amount = 0;
@@ -71,7 +74,8 @@ namespace KitchenInferno
         {
             if (_instance?.HasStatus(Main.PYROMANIA_EFFECT_STATUS) ?? false)
             {
-                amount = Mathf.CeilToInt(_instance.Fires.CalculateEntityCount() / (_instance.Bounds.size.x + 1) / (_instance.Bounds.size.z + 1) * satisfiedOrder.Reward * MAX_ACTIVE_FIRE_BONUS_FACTOR);
+                int baseAmount = GameData.Main.TryGet(satisfiedOrder.ItemID, out Item item) ? item.Reward : satisfiedOrder.Reward;
+                amount = Mathf.CeilToInt(_instance.Fires.CalculateEntityCount() / (_instance.Bounds.size.x + 1) / (_instance.Bounds.size.z + 1) * baseAmount * MAX_ACTIVE_FIRE_BONUS_FACTOR);
                 return true;
             }
             amount = 0;

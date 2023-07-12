@@ -66,7 +66,7 @@ namespace KitchenInferno.Customs.InfernoSetting
                 {
                     OrderingModifiers = new OrderingValues()
                     {
-                        PriceModifier = -0.25f
+                        PriceModifier = -0.50f
                     }
                 }
             },
@@ -93,7 +93,7 @@ namespace KitchenInferno.Customs.InfernoSetting
             {
                 Locale = Locale.English,
                 Name = "Pyromania",
-                Description = "Fire spreads further, faster, and through walls. Some appliance randomly catch fire. Food burns faster.",
+                Description = "Fire spreads further, and through walls. Some appliance randomly catch fire. Food burns faster, and costs less. More money based on percent of restaurant on fire.",
                 FlavourText = "Remember, bring your fire extinguishers to the party!"
             }),
             (Locale.French, new UnlockInfo()
