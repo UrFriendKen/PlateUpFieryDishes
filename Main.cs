@@ -26,7 +26,7 @@ namespace KitchenInferno
         // Mod Version must follow semver notation e.g. "1.2.3"
         public const string MOD_GUID = "IcedMilo.PlateUp.Inferno";
         public const string MOD_NAME = "Inferno";
-        public const string MOD_VERSION = "0.4.8";
+        public const string MOD_VERSION = "0.4.11";
         public const string MOD_AUTHOR = "IcedMilo";
         public const string MOD_GAMEVERSION = ">=1.1.5";
         // Game version this mod is designed for in semver
@@ -45,6 +45,8 @@ namespace KitchenInferno
 
         internal static PreferenceSystemManager PrefManager;
         public const string FIRE_DISPLAY_INTENSITY_ID = "fireDisplayIntensity";
+        public const string DIFFICULTY_FIRE_EXTINGUISHER_START_ID = "difficultyFireExtinguisherStart";
+        public const string DIFFICULTY_FIRE_EXTINGUISHER_HOLD_ID = "difficultyFireExtinguisherHold";
 
         public static readonly RestaurantStatus PYROMANIA_EFFECT_STATUS = (RestaurantStatus)VariousUtils.GetID("pyromaniaEffect");
         public static readonly RestaurantStatus WILDFIRES_EFFECT_STATUS = (RestaurantStatus)VariousUtils.GetID("wildfiresEffect");
@@ -163,6 +165,24 @@ namespace KitchenInferno
                     {
                         CustomFireItem.UpdateFireIntensity(value / 100f);
                     })
+
+                .AddSubmenu("Difficulty Settings", "difficultySettings")
+                    .AddLabel("Start with Fire Extinguisher")
+                    .AddOption<bool>(
+                        DIFFICULTY_FIRE_EXTINGUISHER_START_ID,
+                        true,
+                        new bool[] { false, true },
+                        new string[] { "Disabled", "Enabled" })
+                    .AddLabel("Hold items with Fire Extinguisher")
+                    .AddInfo("Requires game restart")
+                    .AddOption<bool>(
+                        DIFFICULTY_FIRE_EXTINGUISHER_HOLD_ID,
+                        true,
+                        new bool[] { false, true },
+                        new string[] { "Disabled", "Enabled" })
+                    .AddSpacer()
+                    .AddSpacer()
+                .SubmenuDone()
                 .AddSpacer()
                 .AddSpacer();
 
@@ -212,6 +232,18 @@ namespace KitchenInferno
                     appliance.Properties.Add(new CFireImmune());
                 }
 
+                if (PrefManager.Get<bool>(DIFFICULTY_FIRE_EXTINGUISHER_HOLD_ID) && args.gamedata.TryGet(ItemReferences.FireExtinguisher, out Item fireExtinguisher, warn_if_fail: true))
+                {
+                    for (int i = 0; i < fireExtinguisher.Properties.Count; i++)
+                    {
+                        if (!(fireExtinguisher.Properties[i] is CEquippableTool equippableTool))
+                            continue;
+                        equippableTool.CanHoldItems = true;
+                        fireExtinguisher.Properties[i] = equippableTool;
+                        break;
+                    }
+                }
+
                 Process igniteItemProcessGDO = IgniteItemProcess?.GameDataObject;
                 if (igniteItemProcessGDO != null)
                 {
@@ -242,6 +274,10 @@ namespace KitchenInferno
                     if (!burnedFood.Properties.Select(x => x.GetType()).Contains(typeof(CFireImmuneMenuItem)))
                         burnedFood.Properties.Add(new CFireImmuneMenuItem());
                 }
+
+                
+
+
                 void AddBaseGameItemPossibleSide(Item item)
                 {
                     ItemGroup itemGroup = args.gamedata.Get<ItemGroup>(ItemReferences.BurgerPlated);

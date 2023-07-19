@@ -10,6 +10,8 @@ namespace KitchenInferno.Customs.InfernoSetting
     {
         public override string UniqueNameID => "pyromaniaUnlock";
 
+        public const float PRICE_MODIFIER_PERCENT = 0.5f;
+
         public override List<UnlockEffect> Effects => new List<UnlockEffect>()
         {
             new GlobalEffect()
@@ -66,7 +68,7 @@ namespace KitchenInferno.Customs.InfernoSetting
                 {
                     OrderingModifiers = new OrderingValues()
                     {
-                        PriceModifier = -0.50f
+                        PriceModifier = -PRICE_MODIFIER_PERCENT
                     }
                 }
             },

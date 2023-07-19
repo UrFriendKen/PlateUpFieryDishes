@@ -1,5 +1,6 @@
 ﻿using Kitchen;
 using KitchenData;
+using KitchenInferno.Customs.InfernoSetting;
 using KitchenMods;
 using Unity.Collections;
 using Unity.Entities;
@@ -56,7 +57,7 @@ namespace KitchenInferno
             return multiplier < 0f ? 0f : multiplier;
         }
 
-        private const float FIRE_ORDER_BONUS_FACTOR = 0.4f;
+        private const float FIRE_ORDER_BONUS_FACTOR = 0.4f / (1 - PyromaniaUnlock.PRICE_MODIFIER_PERCENT);
         internal static bool GetFireOrderBonus(CWaitingForItem satisfiedOrder, out int amount)
         {
             if (_instance?.Has<CItemOnFire>(satisfiedOrder.Item) ?? false)
@@ -69,7 +70,7 @@ namespace KitchenInferno
             return false;
         }
 
-        private const float MAX_ACTIVE_FIRE_BONUS_FACTOR = 10f;
+        private const float MAX_ACTIVE_FIRE_BONUS_FACTOR = 10f / (1 - PyromaniaUnlock.PRICE_MODIFIER_PERCENT);
         internal static bool GetActiveFireBonus(CWaitingForItem satisfiedOrder, out int amount)
         {
             if (_instance?.HasStatus(Main.PYROMANIA_EFFECT_STATUS) ?? false)
