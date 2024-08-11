@@ -28,7 +28,7 @@ namespace KitchenInferno
 
         protected override void OnUpdate()
         {
-            if (AppliancesOnFire.IsEmpty)
+            if (AppliancesOnFire.IsEmpty || FireOrderChances.IsEmpty)
                 return;
 
             float burnSpeed = 1f;

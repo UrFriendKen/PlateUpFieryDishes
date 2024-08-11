@@ -75,7 +75,6 @@ namespace KitchenInferno.Patches
         static float GetFireIntensity()
         {
             float intensity = Main.PrefManager.Get<int>(Main.FIRE_DISPLAY_INTENSITY_ID) / 100f;
-            Main.LogInfo(intensity);
             return intensity;
         }
 

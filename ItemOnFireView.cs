@@ -56,7 +56,12 @@ namespace KitchenInferno
 
         protected override void UpdateData(ViewData data)
         {
-            FireVfx?.SetFloat("Active", data.FireActive ? Main.GetFireDisplayIntensity() : 0f);
+            if (!FireVfx)
+                return;
+            float intensity = data.FireActive ? Main.GetFireDisplayIntensity() : 0f;
+
+            FireVfx.gameObject.SetActive(intensity > 0f);
+            FireVfx.SetFloat("Active", data.FireActive ? Main.GetFireDisplayIntensity() : 0f);
         }
     }
 }

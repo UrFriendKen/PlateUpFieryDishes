@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using Kitchen;
+using KitchenData;
 using System;
 using System.Reflection;
 using Unity.Entities;
@@ -9,7 +10,9 @@ namespace KitchenInferno.Patches
     [HarmonyPatch]
     static class GroupReceiveItem_Patch
     {
-        [HarmonyPatch(typeof(GroupReceiveItem), "IsRequestSatisfied")]
+        [HarmonyPatch(typeof(GroupReceiveItem), "IsRequestSatisfied",
+            new Type[] { typeof(GameData), typeof(Entity), typeof(Entity), typeof(int), typeof(CItem)},
+            new ArgumentType[] { ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Out, ArgumentType.Out })]
         [HarmonyPrefix]
         static bool IsRequestSatisfied_Prefix(Entity request, Entity candidate, ref bool __result)
         {
